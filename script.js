@@ -28,6 +28,11 @@
 	document.body.appendChild(thumb_up_div);
 	setTimeout(function(){ y=document.getElementById('thumb_up_div');document.body.removeChild(y); }, 1000);*/
 
+	/*
+		A, D - keyup
+		W, S - keydown	
+	*/
+
 	var pressButton = function(button, event, image){
 		var charCode = button.toUpperCase().charCodeAt(0);
 		console.log(charCode);
@@ -48,5 +53,5 @@
 		}
 	}
 
-	pressButton('a', 'keyup', 'next');
+	pressButton('w', 'keydown', 'thumbup');
 })();
