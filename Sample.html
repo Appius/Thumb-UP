@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hand Sample</title>
+
+    <script type="text/javascript" src="..\common\JavaScript\jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="..\common\JavaScript\promise-1.0.0.min.js"></script>
+    <script type="text/javascript" src="..\common\JavaScript\realsense.js"></script>
+    <script type="text/javascript" src="..\common\JavaScript\realsenseinfo.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#status').val('');
+
+            var sense;
+            var imageSize;
+            var handModule;
+            var handConfiguration;
+
+            // check platform compatibility
+            RealSenseInfo(['hand'], function (info) {
+                if (info.IsReady == true) {
+                    status('Started...');
+                } else {
+                    status('ERROR');
+                }
+            })
+
+            PXCMSenseManager_CreateInstance().then(function (result) {
+                sense = result;
+                return sense.EnableHand(onHandData);
+            }).then(function (result) {
+                handModule = result;
+                status('Init started...');
+                return sense.Init(onConnect, onStatus);
+            }).then(function (result) {
+                return handModule.CreateActiveConfiguration();
+            }).then(function (result) {
+                handConfiguration = result;
+                return handConfiguration.DisableAllAlerts();
+            }).then(function (result) {
+                return handConfiguration.EnableAllGestures(false);
+            }).then(function (result) {
+                return handConfiguration.ApplyChanges();
+            }).then(function (result) {
+                return sense.QueryCaptureManager();
+            }).then(function (capture) {
+                return capture.QueryImageSize(pxcmConst.PXCMCapture.STREAM_TYPE_DEPTH);
+            }).then(function (result) {
+                imageSize = result.size;
+                return sense.StreamFrames();
+            }).then(function (result) {
+                status('Streaming ' + imageSize.width + 'x' + imageSize.height);
+                document.getElementById("Stop").disabled = false;
+            }).catch(function (error) {
+                status('Init failed: ' + JSON.stringify(error));
+            });
+
+            $('#Stop').click(function () {
+                document.getElementById("Stop").disabled = true;
+                sense.Close().then(function (result) {
+                    status('Stopped');
+                });
+            });
+
+            function onConnect(data) {
+                if (data.connected == false) {
+                    status('Alert: ' + JSON.stringify(data));
+                }
+            }
+
+            function onHandData(mid, module, data) {
+                for (var g = 0; g < data.gestures.length; g++) {
+                    status(data.gestures[g].name);
+                }
+            }
+
+            function onStatus(data) {
+                if (data.sts < 0) {
+                    status('Error ' + data.sts);
+                    clear();
+                }
+            }
+
+            function status(msg) {
+                $('#status').val($('#status').val() + msg + '\r\n');
+
+                var psconsole = $('#status');
+                if(psconsole.length)
+                   psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="container">
+            <p>
+                <textarea id="status" name="status" rows="20" cols="50"></textarea>
+            </p>
+            <button id="Stop">Stop</button>
+        </div>
+    </div>
+</body>
+</html>
