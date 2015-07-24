@@ -56,3 +56,8 @@
 		}
 	};
 
+<<<<<<< HEAD
+=======
+	pressButton('d', 'keyup', 'next');
+})();
+>>>>>>> f39d52d2dd26112d9accfaac96028c99f5b81ec4
