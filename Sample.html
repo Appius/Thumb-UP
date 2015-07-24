@@ -9,15 +9,18 @@
     <script type="text/javascript" src="libs\realsenseinfo.js"></script>
 
     <script type="text/javascript" src="js\script.js"></script>
+    <script type="text/javascript" src="js\providers.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
             $('#status').val('');
 
+            var url = window.location.href;
             var sense;
             var imageSize;
             var handModule;
             var handConfiguration;
+            var timeout = false;
 
             // check platform compatibility
             RealSenseInfo(['hand'], function (info) {
@@ -73,8 +76,23 @@
 
             function onHandData(mid, module, data) {
                 for (var g = 0; g < data.gestures.length; g++) {
+                    if (timeout)
+                        return;
+
                     status(data.gestures[g].name);
+
+                    if (url.indexOf('pickabu') != -1 && pickabu(data.gestures[g].name))
+                        timeout = true;
+                    else if (url.indexOf('imgur') != -1 && imgur(data.gestures[g].name))
+                        timeout = true;
+                    else if (pickabu(data.gestures[g].name)) timeout = true;
+
+                    setTimeout("clearTimeout()", 1000);
                 }
+            }
+
+            function clearTimeout() {
+                timeout = false;
             }
 
             function onStatus(data) {
