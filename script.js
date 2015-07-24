@@ -53,5 +53,5 @@
 		}
 	}
 
-	pressButton('w', 'keydown', 'thumbup');
+	pressButton('d', 'keyup', 'next');
 })();
