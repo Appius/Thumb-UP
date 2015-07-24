@@ -1,0 +1,33 @@
+<html>
+<head>
+</head>
+<body>
+    <center>
+        <div style="display: block; border: 1px solid;">
+            <a href="javascript:(
+                function(){
+			var keyboardEvent = document.createEvent("KeyboardEvent");
+			var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+
+			keyboardEvent[initMethod](
+                   		"keyup", 
+                    		true,
+                    		true,
+                    		window,
+                    		false,
+                    		false,
+                    		false,
+                    		false,
+                    		68,
+                    		0
+			);
+			document.dispatchEvent(keyboardEvent);
+                
+                })();
+jQuery.event.trigger({ type : 'keyup', which : "D".charCodeAt(0) });
+                ">pull to your bar</a>
+        </div>
+    </center>
+</body>
+</html>
+<!-- 68 - D , 65 - A-->
