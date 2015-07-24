@@ -17,23 +17,45 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <title>thumbUpSense</title>
+        <style>
+            .thumb-block{
+                padding-top: 150px;
+                background: url(realsense.png) no-repeat;
+                background-position: center right;
+            }
+            .thumb-block .jumbotron{
+                background: none;
+            }
+            .thumb-footer{
+                background-color: #eee;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-xs-4"></div>
-                <div class="col-xs-4">
-                    <h1>ThumbUp!</h1>
-                    <p>RealSense technology by Intel</p>
+                <div class="col-xs-3"></div>
+                <div class="col-xs-6 thumb-block">
+                    <div class="jumbotron">
+                        <h1>ThumbUp!</h1>
+                        <p>RealSense technology by Intel</p>
+                        <div class="row">
+                            <div class="col-xs-10">
+                            <div class="alert alert-success">Drag this links to your bookmarks bar one-by-one or install our amazing plugin!</div>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li role="presentation" class="active">
+                                        <a href="">Пикабу</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="">Imgur</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-6"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-4"></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4"></div>
-                <div class="col-xs-4">
-                    <button class="btn btn-success">Button</button>
-                </div>
-                <div class="col-xs-4"></div>
+                <div class="col-xs-3"></div>
             </div>
         </div>
 
